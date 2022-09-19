@@ -1,9 +1,18 @@
 package com.microlipin.customer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public record CustomerService() {
+public class CustomerService {
+
+    private final CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -12,6 +21,6 @@ public record CustomerService() {
                 .build();
         // todo: check if email valid
         // todo: check if email not taken
-        // todo: store customer in db
+        customerRepository.save(customer);
     }
 }

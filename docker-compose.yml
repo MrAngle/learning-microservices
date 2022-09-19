@@ -1,9 +1,9 @@
 services:
   postgres:
-    container_name: postgres
-    image: postgres
+    container_name: postgres-new
+    image: postgres:14.4-alpine
     environment:
-      POSTGRES_USER: microlipin
+      POSTGRES_USER: lippio-mser
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
