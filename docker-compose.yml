@@ -14,6 +14,22 @@ services:
       - postgres
     restart: unless-stopped
 
+# create new db in real environment
+#  postgres-fraud:
+#    container_name: postgres-new
+#    image: postgres:14.4-alpine
+#    environment:
+#      POSTGRES_USER: lippio-mser
+#      POSTGRES_PASSWORD: password
+#      PGDATA: /data/postgres
+#    volumes:
+#      - postgres:/data/postgres
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - postgres
+#    restart: unless-stopped
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
