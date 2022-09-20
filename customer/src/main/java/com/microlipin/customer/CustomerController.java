@@ -23,12 +23,6 @@ public class CustomerController {
     public void registerCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest) {
         log.info("new customer registration {}", customerRegistrationRequest);
         customerService.registerCustomer(customerRegistrationRequest);
-
-        List<Object> list = new ArrayList<>();
-        paintAllBuildings(list);
-        list.add(2);
-        list.add(2.1);
-        System.out.println(list);
     }
 
     @GetMapping("/test")
