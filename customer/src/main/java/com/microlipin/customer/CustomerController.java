@@ -1,5 +1,6 @@
 package com.microlipin.customer;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,10 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/v1/customers")
-public record CustomerController(CustomerService customerService) {
+@AllArgsConstructor
+public class CustomerController {
+
+    private CustomerService customerService;
 
     @PostMapping
     public void registerCustomer(@RequestBody CustomerRegistrationRequest customerRegistrationRequest) {
