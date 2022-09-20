@@ -2,6 +2,7 @@ package com.microlipin.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
 public class Customer {
 
     @Id
