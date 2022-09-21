@@ -1,5 +1,7 @@
 package com.microlipin.customer;
 
+import com.lippio.clients.fraud.FraudCheckResponse;
+import com.lippio.clients.fraud.FraudClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +15,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final RestTemplate restTemplate;
+    private final FraudClient fraudClient;
 
 
     /**
@@ -35,6 +38,7 @@ public class CustomerService {
                 FraudCheckResponse.class,
                 customer.getId()
         );
+        FraudCheckResponse fraudster = fraudClient.isFraudster(customer.getId());
 
         if (fraudCheckResponse != null && fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("fraudster");
