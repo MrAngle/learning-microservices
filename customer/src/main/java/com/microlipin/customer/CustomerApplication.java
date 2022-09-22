@@ -6,7 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = {
+                // if You set wrong package name it will not create beans (for example controllers)
+                "com.microlipin.customer",
+                "com.lippio.amqp"
+        }
+)
 @EnableEurekaClient
 @EnableFeignClients(
         basePackages = "com.lippio.clients"

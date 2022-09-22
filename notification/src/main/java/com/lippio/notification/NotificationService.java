@@ -15,9 +15,12 @@ public class NotificationService {
 
     private NotificationRepository notificationRepository;
 
-    public Notification saveToDb(NotificationRequest notificationRequest) {
+    public Notification send(NotificationRequest notificationRequest) {
         Notification notification = Notification.toNotification(
-                notificationRequest, SENDER_NAME, LocalDateTime.now());
+                notificationRequest,
+                SENDER_NAME,
+                LocalDateTime.now() // sent by service not by user
+        );
         return notificationRepository.save(notification);
     }
 }

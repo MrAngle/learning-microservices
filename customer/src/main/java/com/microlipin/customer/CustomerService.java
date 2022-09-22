@@ -1,13 +1,11 @@
 package com.microlipin.customer;
 
+import com.lippio.amqp.RabbitMQMessageProducer;
 import com.lippio.clients.fraud.FraudCheckResponse;
 import com.lippio.clients.fraud.FraudClient;
-import com.lippio.clients.notification.NotificationClient;
 import com.lippio.clients.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * The type Customer service.
@@ -17,9 +15,8 @@ import org.springframework.web.client.RestTemplate;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final RestTemplate restTemplate;
     private final FraudClient fraudClient;
-    private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
 
 
     /**
@@ -47,12 +44,18 @@ public class CustomerService {
             throw new IllegalStateException("fraudster");
         }
 
-        // TODO: make it async
-        NotificationRequest notificationRequest = new NotificationRequest(customer.getId(), customer.getEmail(), "TRALAA");
-        ResponseEntity<String> stringResponseEntity = notificationClient.saveNotification(notificationRequest);
-        if (stringResponseEntity != null && !stringResponseEntity.getStatusCode().is2xxSuccessful()) {
-            throw new IllegalStateException("notification");
-        }
+        NotificationRequest notificationRequest = new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                "TRALAA"
+        );
+
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key"
+        );
+
     }
 
 }

@@ -22,6 +22,6 @@ public class NotificationController {
     @PostMapping
     public ResponseEntity<String> saveNotification(@RequestBody NotificationRequest notificationRequest) {
         log.info("New notification... {}", notificationRequest);
-        return new ResponseEntity<>(notificationService.saveToDb(notificationRequest).toString(), HttpStatus.OK);
+        return new ResponseEntity<>(notificationService.send(notificationRequest).toString(), HttpStatus.OK);
     }
 }
