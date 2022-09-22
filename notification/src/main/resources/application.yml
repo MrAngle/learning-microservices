@@ -19,6 +19,9 @@ spring:
 
   zipkin:
     base-url: http://localhost:9411
+  rabbitmq:
+    addresses: localhost:5672
+
 
 eureka:
   client:
@@ -26,3 +29,17 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+
+
+# ITS NOT PART OF RABBIT MQ CONFIGURATION. ITS ONLY VALUE PARAMETERS FOR APPLICATION
+rabbitmq:
+  exchanges:
+    # TOPIC EXCHANGE - gave it a name
+    internal: internal.exchange
+  queue:
+    # NAME FOR QUEUE
+    notification: notification.queue
+  routing-keys:
+    # HOW TITLE EXCHANGE FOR QUEUE (BINDING)
+    internal-notification: internal.notification.routing-key
