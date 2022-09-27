@@ -52,19 +52,100 @@ services:
     container_name: zipkin
     ports:
       - 9411:9411
+    networks:
+      - spring
 
 
   rabbitmq:
     image: rabbitmq:3.9.11-management-alpine
     container_name: rabbitmq
+    networks:
+      - spring
     ports:
       - 5672:5672
       - 15672:15672
 
+  eureka-server:
+    image: mrangle/eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - spring
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+
+  api-gateway:
+    image: mrangle/api-gateway:latest
+    container_name: api-gateway
+    ports:
+      - "8200:8200"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - spring
+    depends_on:
+      - zipkin
+      - eureka-server
+
+  fraud:
+    image: mrangle/fraud:latest
+    container_name: fraud
+    ports:
+      - "8081:8081"
+    networks:
+      - spring
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+      - eureka-server
+      - postgres
+      - rabbitmq
+
+  notification:
+    image: mrangle/notification:latest
+    container_name: notification
+    ports:
+      - "8100:8100"
+    networks:
+      - spring
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+      - eureka-server
+      - rabitmq
+      - postgres
+
+
+  customer:
+    image: mrangle/customer:latest
+    container_name: customer
+    ports:
+      - "8080:8080"
+    networks:
+      - spring
+      - postgres
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+      - eureka-server
+      - fraud
+      - rabitmq
 
 networks:
   postgres:
     driver: bridge
+  spring:
+    driver: bridge
+
+
 volumes:
   postgres:
   pgadmin:

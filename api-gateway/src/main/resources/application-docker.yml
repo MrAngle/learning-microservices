@@ -5,7 +5,7 @@ spring:
   application:
     name: api-gateway
   zipkin:
-    base-url: http://localhost:9411
+    base-url: http://zipkin:9411
   cloud:
     gateway:
       routes:
@@ -13,14 +13,14 @@ spring:
           uri: lb://CUSTOMER
           predicates:
             - Path=/api/v1/customers/**
-#        - id: fraud
-#          uri: lb://FRAUD  - based on eureka server
-#          predicates:
-#            - Path=/api/v1/fraud/** - which endpoints
+  #        - id: fraud
+  #          uri: lb://FRAUD  - based on eureka server
+  #          predicates:
+  #            - Path=/api/v1/fraud/** - which endpoints
 
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka-server:8761/eureka
