@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 //    value = "fraud",
 //        path = "api/v1/fraud-check"
 //)
-@FeignClient("fraud")
+@FeignClient(
+        name = "fraud",
+        url = "${clients.fraud.url}"
+)
 public interface FraudClient {
 
     /**
@@ -21,7 +24,7 @@ public interface FraudClient {
      * @param customerId the customer id
      * @return the fraud check response
      */
-    @GetMapping(path="api/v1/fraud-check/{customerId}")
+    @GetMapping(path = "api/v1/fraud-check/{customerId}")
     public FraudCheckResponse isFraudster(@PathVariable("customerId") Long customerId);
 
 }

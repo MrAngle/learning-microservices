@@ -65,30 +65,34 @@ services:
       - 5672:5672
       - 15672:15672
 
-  eureka-server:
-    image: mrangle/eureka-server:latest
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    networks:
-      - spring
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    depends_on:
-      - zipkin
+# Its replaced by k8s load balancers
+#  eureka-server:
+#    image: mrangle/eureka-server:latest
+#    container_name: eureka-server
+#    ports:
+#      - "8761:8761"
+#    networks:
+#      - spring
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    depends_on:
+#      - zipkin
+# ======================================
 
-  api-gateway:
-    image: mrangle/api-gateway:latest
-    container_name: api-gateway
-    ports:
-      - "8200:8200"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
-      - eureka-server
+# Its replaced by k8s load balancers
+#  api-gateway:
+#    image: mrangle/api-gateway:latest
+#    container_name: api-gateway
+#    ports:
+#      - "8200:8200"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    networks:
+#      - spring
+#    depends_on:
+#      - zipkin
+#      - eureka-server
+# ======================================
 
   fraud:
     image: mrangle/fraud:latest
@@ -102,7 +106,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-      - eureka-server
+#      - eureka-server
       - postgres
       - rabbitmq
 
@@ -118,7 +122,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-      - eureka-server
+#      - eureka-server
       - rabitmq
       - postgres
 
@@ -135,7 +139,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - zipkin
-      - eureka-server
+#      - eureka-server
       - fraud
       - rabitmq
 
